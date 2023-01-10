@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Weapon System")]
+    public bool sheathing = false;
+    public GameObject swordUsing;
+    public GameObject swordDisplay;
+    public GameObject shieldUsing;
+    public GameObject shieldDisplay;
+
     [Header("MovementVariables")]
     public float moveSpeed;
     public float maxSpeed;
@@ -40,6 +47,26 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("MovementSpeed", verticalInput);
         animator.SetFloat("HorizontalSpeed", horizontalInput);
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if(sheathing == false)
+            {
+                sheathing = true;
+            }
+            else
+            {
+                sheathing = false;
+                swordUsing.gameObject.SetActive(true);
+                swordDisplay.gameObject.SetActive(false);
+                shieldUsing.gameObject.SetActive(true);
+                shieldDisplay.gameObject.SetActive(false);
+            }
+
+            animator.SetTrigger("Sheath");
+            animator.SetBool("isSheathed", sheathing);
+            
+        }
     }
 
     void FixedUpdate()
@@ -56,5 +83,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
         }
+    }
+
+    public void SheathingIn()
+    {
+        swordUsing.gameObject.SetActive(false);
+        swordDisplay.gameObject.SetActive(true);
+        shieldUsing.gameObject.SetActive(false);
+        shieldDisplay.gameObject.SetActive(true);
     }
 }
