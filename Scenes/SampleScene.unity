@@ -1734,8 +1734,8 @@ MonoBehaviour:
   grabableSword: {fileID: 0}
   isInvOpen: 0
   sheathing: 0
-  swordUsing: {fileID: 0}
-  swordDisplay: {fileID: 0}
+  swordObject: {fileID: 3546430410076101333, guid: 6f08955b31309ae41860fb51880a4021,
+    type: 3}
   shieldUsing: {fileID: 1753416793}
   shieldDisplay: {fileID: 1629876530}
   moveSpeed: 20
@@ -1982,7 +1982,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e9ba223844ebabc42b78248aeba7f15b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9ba223844ebabc42b78248aeba7f15b, type: 3}
@@ -2067,6 +2067,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e9ba223844ebabc42b78248aeba7f15b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9ba223844ebabc42b78248aeba7f15b, type: 3}

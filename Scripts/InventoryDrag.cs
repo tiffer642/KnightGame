@@ -17,6 +17,8 @@ public class InventoryDrag : MonoBehaviour
                 Camera.main.ScreenToWorldPoint(new Vector3
                 (Input.mousePosition.x, Input.mousePosition.y, -Camera.main.nearClipPlane + distance));
             rb.isKinematic = true;
+
+            GameObject.Find("Player").GetComponentInChildren<EquipSword>().DeleteAll();
         }
         else
         {

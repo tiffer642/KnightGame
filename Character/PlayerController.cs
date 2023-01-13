@@ -11,8 +11,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Weapon Sheathing System")]
     public bool sheathing = false;
-    public GameObject swordUsing;
-    public GameObject swordDisplay;
+    public GameObject swordObject;
     public GameObject shieldUsing;
     public GameObject shieldDisplay;
 
@@ -40,11 +39,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        swordDisplay = GetComponentInChildren<EquipSword>().inPos1;
-        swordUsing = GetComponentInChildren<EquipSword>().inPosHand;
-
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
+        if(inventory.activeInHierarchy == true)
+        {
+            verticalInput = 0;
+            horizontalInput = 0;
+            rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis("Horizontal");
+        }
 
         if (rb.velocity.magnitude > maxSpeed)
         {
@@ -62,27 +67,30 @@ public class PlayerController : MonoBehaviour
             //Check if items are not sheathed
             if(sheathing == false)
             {
+                Debug.Log("Sheathed");
                 //if items are not sheathed, sheath them
                 sheathing = true;
+                animator.SetTrigger("Sheath");
             }
-            else
+            else if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1 && animator.GetBool("isSheathed") == true)
             {
+                Debug.Log("Unsheathed");
                 //if items are sheathed, unsheath them
                 sheathing = false;
-                GetComponentInChildren<EquipSword>().EquipInHand();
-
-                //check if sword display and sword using are empty
-                if(swordDisplay != null && swordUsing != null)
-                {
-                    //if not empty activate sword using, deactivate sword display
-                    swordUsing.gameObject.SetActive(true);
-                    swordDisplay.gameObject.SetActive(false);
-                }
+                GetComponentInChildren<EquipSword>().EquipInHand(swordObject);
                 shieldUsing.gameObject.SetActive(true);
                 shieldDisplay.gameObject.SetActive(false);
+                animator.SetTrigger("Sheath");
+            }
+            else if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 2)
+            {
+                sheathing = false;
+            }
+            else if(sheathing == true && animator.GetBool("isSheathed") == false)
+            {
+                sheathing = false;
             }
             //change animations accordingly to being sheathed and unsheathed
-            animator.SetTrigger("Sheath");
             animator.SetBool("isSheathed", sheathing);
             
         }
@@ -93,7 +101,17 @@ public class PlayerController : MonoBehaviour
             {
                 isInvOpen = true;
                 inventory.SetActive(true);
-                if(grabableSword != null)
+                if(GameObject.Find("SwordSlot").GetComponent<SlotBehavior>().itemInSlot != null)
+                {
+                    GameObject.Find("SwordSlot").GetComponent<SlotBehavior>().itemInSlot.SetActive(true);
+                }
+
+                if (GameObject.Find("SwordSlot (1)").GetComponent<SlotBehavior>().itemInSlot != null)
+                {
+                    GameObject.Find("SwordSlot (1)").GetComponent<SlotBehavior>().itemInSlot.SetActive(true);
+                }
+
+                if (grabableSword != null)
                 {
                     grabableSword.SetActive(true);
                 }
@@ -105,8 +123,23 @@ public class PlayerController : MonoBehaviour
                     grabableSword.SetActive(false);
                 }
                 isInvOpen = false;
+                if (GameObject.Find("SwordSlot").GetComponent<SlotBehavior>().itemInSlot != null)
+                {
+                    GameObject.Find("SwordSlot").GetComponent<SlotBehavior>().itemInSlot.SetActive(false);
+                }
+
+                if (GameObject.Find("SwordSlot (1)").GetComponent<SlotBehavior>().itemInSlot != null)
+                {
+                    GameObject.Find("SwordSlot (1)").GetComponent<SlotBehavior>().itemInSlot.SetActive(false);
+                }
+
                 inventory.SetActive(false);
             }
+        }
+
+        if(Input.GetMouseButtonDown(0) && inventory.activeInHierarchy == false && sheathing == false)
+        {
+            animator.SetTrigger("Attack1");
         }
     }
 
@@ -128,10 +161,10 @@ public class PlayerController : MonoBehaviour
 
     public void SheathingIn()
     {
-        if (swordDisplay != null && swordUsing != null)
+        Debug.Log("SheathedAnimation");
+        if(sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1)
         {
-            swordUsing.gameObject.SetActive(false);
-            swordDisplay.gameObject.SetActive(true);
+            GetComponentInChildren<EquipSword>().EquipInSlotOne(swordObject);
         }
         shieldUsing.gameObject.SetActive(false);
         shieldDisplay.gameObject.SetActive(true);

@@ -34,8 +34,6 @@ public class SlotBehavior : MonoBehaviour
                 {
                     swordDetectedSlotTwo = false;
                     enableSwordSpawning = false;
-                    Debug.Log("SwordSpawnedInSlot1");
-                    Debug.Log("What is it trying to spawn: " + knightSword);
                     GameObject.Find("Player").GetComponentInChildren<EquipSword>().EquipInSlotOne(knightSword);
                 }
             }
@@ -49,13 +47,15 @@ public class SlotBehavior : MonoBehaviour
                 {
                     swordDetectedSlotOne = false;
                     enableSwordSpawning = false;
-                    Debug.Log("SwordSpawnedInSlot2");
-                    Debug.Log("What is it trying to spawn: " + knightSword);
                     GameObject.Find("Player").GetComponentInChildren<EquipSword>().EquipInSlotTwo(knightSword);
+                    if(GameObject.Find("Player").GetComponent<PlayerController>().animator.GetBool("isSheathed") == false && slotNumber == 2)
+                    {
+                        GameObject.Find("Player").GetComponent<PlayerController>().animator.SetTrigger("Sheath");
+                    }
                 }
             }
         }
-        else
+        else if(slotted == false)
         {
             enableSwordSpawning = true;
         }
@@ -65,8 +65,11 @@ public class SlotBehavior : MonoBehaviour
     public void InsertInSlot(GameObject item)
     {
         itemInSlot = item;
-        item.GetComponent<InventoryDrag>().isDragging = false;
-        item.GetComponent<InventoryDrag>().slot = gameObject;
+        if(item != null)
+        {
+            item.GetComponent<InventoryDrag>().isDragging = false;
+            item.GetComponent<InventoryDrag>().slot = gameObject;
+        }
         GameObject.Find("Player").GetComponent<PlayerController>().grabableSword = item;
         slotted = true;
 
@@ -77,6 +80,14 @@ public class SlotBehavior : MonoBehaviour
         if(other.CompareTag("SwordInv"))
         {
             InsertInSlot(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("SwordInv"))
+        {
+            InsertInSlot(null);
         }
     }
 }

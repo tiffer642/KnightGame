@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 996272514554777546}
   - component: {fileID: 3042058245072304896}
   - component: {fileID: 8960825003259122949}
+  - component: {fileID: -5910187653028709266}
+  - component: {fileID: 4985581140016661348}
   m_Layer: 0
   m_Name: KnightSwordVisual
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3546430410076101333}
   m_LocalRotation: {x: 0.60876137, y: 0, z: 0.7933534, w: 0}
   m_LocalPosition: {x: -0.0000000019596027, y: 3.432734, z: -0.000000001425898}
-  m_LocalScale: {x: 0.0497817, y: 0.08014335, z: 0.0497817}
+  m_LocalScale: {x: 0.0304211, y: 0.0489748, z: 0.0304211}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,3 +100,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfWeapon: KnightSword
+--- !u!65 &-5910187653028709266
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546430410076101333}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.6324923, y: 46.82794, z: 12.761567}
+  m_Center: {x: 0, y: 18.76358, z: 0}
+--- !u!114 &4985581140016661348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546430410076101333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece97b5b3c35be64eb98a5b78d062cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot1: {fileID: 0}
+  usingSlot1: 0
+  slot2: {fileID: 0}
+  usingSlot2: 0
+  slotHand: {fileID: 0}
+  usingSlotHand: 0
