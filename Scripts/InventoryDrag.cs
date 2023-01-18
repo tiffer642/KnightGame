@@ -8,6 +8,7 @@ public class InventoryDrag : MonoBehaviour
     public bool isDragging = false;
     public GameObject slot;
     public float distance;
+    public ParticleSystem ps;
 
     void Update()
     {
@@ -19,6 +20,7 @@ public class InventoryDrag : MonoBehaviour
             rb.isKinematic = true;
 
             GameObject.Find("Player").GetComponentInChildren<EquipSword>().DeleteAll();
+            ps.Pause();
         }
         else
         {
@@ -36,7 +38,7 @@ public class InventoryDrag : MonoBehaviour
         if(Input.GetMouseButton(0))
         {
             isDragging = true;
-            if(slot != null)
+            if (slot != null)
             {
                 slot.GetComponent<SlotBehavior>().slotted = false;
             }
