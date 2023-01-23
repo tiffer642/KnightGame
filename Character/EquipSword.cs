@@ -44,6 +44,7 @@ public class EquipSword : MonoBehaviour
     {
         Debug.Log("Equiped In Slot Hand");
         inPosHand = Instantiate(sword, equipPosHand.transform.position, equipPosHand.transform.rotation);
+        GameObject.Find("Player").GetComponent<PlayerController>().swordObject = inPosHand;
         inPosHand.GetComponent<VisualSwordController>().slotHand = equipPosHand;
         inPosHand.GetComponent<VisualSwordController>().SlotHand();
         Destroy(inPos1);

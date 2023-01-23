@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Attacking")]
+    public float comboWaitTime;
+    public float pushAmount;
+
     [Header("Inventory System")]
     public GameObject inventory;
     public GameObject grabableSword;
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 sheathing = true;
                 animator.SetTrigger("Sheath");
             }
-            else if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1 && animator.GetBool("isSheathed") == true)
+            else if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1 && animator.GetBool("isSheathed") == true && animator.GetFloat("MovementSpeed") == 0)
             {
                 Debug.Log("Unsheathed");
                 //if items are sheathed, unsheath them
@@ -139,7 +143,17 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && inventory.activeInHierarchy == false && sheathing == false)
         {
-            animator.SetTrigger("Attack1");
+            if (animator.GetBool("IsAttacking") == false)
+            {
+                animator.SetBool("IsAttacking", true);
+                animator.SetTrigger("Attack1");
+                StartCoroutine(ComboDelay());
+            }
+            else if(animator.GetBool("IsAttacking") == true)
+            {
+                animator.SetTrigger("Attack1");
+                StartCoroutine(ComboDelay());
+            }
         }
     }
 
@@ -168,5 +182,26 @@ public class PlayerController : MonoBehaviour
         }
         shieldUsing.gameObject.SetActive(false);
         shieldDisplay.gameObject.SetActive(true);
+    }
+
+    IEnumerator ComboDelay()
+    {
+        yield return new WaitForSeconds(comboWaitTime);
+        animator.SetBool("IsAttacking", false);
+    }
+
+    public void PushWhileAttacking()
+    {
+        rb.AddForce(transform.forward * pushAmount, ForceMode.Impulse);
+    }
+
+    public void EnableCollider()
+    {
+        swordObject.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        swordObject.GetComponent<BoxCollider>().enabled = false;
     }
 }
