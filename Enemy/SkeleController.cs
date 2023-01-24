@@ -11,6 +11,9 @@ public class SkeleController : MonoBehaviour
     public float health = 100;
     public bool canBeHit = true;
     public float immunityFrameCount = 3f;
+    public GameObject detector;
+    public GameObject distanceChecker;
+    public bool canAttack = true;
 
     [Header("NavMesh")]
     public NavMeshAgent agent;
@@ -29,14 +32,31 @@ public class SkeleController : MonoBehaviour
             Invoke("StartDeath", 0);
         }
 
-        if(GetComponentInChildren<DetectPlayer>().isPlayerDetected == true && GetComponentInChildren<DetectPlayer>().playerObject != null)
+        if (detector.GetComponent<DetectPlayer>().isPlayerDetected == true && detector.GetComponent<DetectPlayer>().playerObject != null && health > 0)
         {
-            agent.destination = GetComponentInChildren<DetectPlayer>().playerObject.transform.position;
-            agent.speed = moveSpeed;
+            agent.destination = detector.GetComponent<DetectPlayer>().playerObject.transform.position;
+
+            if (distanceChecker.GetComponent<KeepDistance>().keepDistance == true)
+            {
+                agent.speed = 0;
+                transform.LookAt(detector.GetComponent<DetectPlayer>().playerObject.transform.position);
+                animator.SetBool("IsAttacking", true);
+                StartCoroutine("Attacking");
+                if (canAttack == true)
+                {
+                    animator.SetTrigger("Attack");
+                }
+            }
+            else if (distanceChecker.GetComponent<KeepDistance>().keepDistance == false)
+            {
+                agent.speed = moveSpeed;
+                animator.SetBool("IsAttacking", false);
+            }
         }
         else
         {
             agent.speed = 0;
+            animator.SetBool("IsAttacking", false);
         }
 
         animator.SetFloat("MovementSpeed", agent.speed);
@@ -45,10 +65,13 @@ public class SkeleController : MonoBehaviour
     public void DespawnSkele()
     {
         Destroy(gameObject);
+        Destroy(detector);
+        Destroy(distanceChecker);
     }
 
     public void StartDeath()
     {
+        agent.speed = 0;
         animator.SetTrigger("Death");
     }
 
@@ -59,6 +82,7 @@ public class SkeleController : MonoBehaviour
             if (other.CompareTag("Weapon"))
             {
                 animator.SetTrigger("Hit");
+                agent.speed = 0;
                 health -= 25;
             }
             canBeHit = false;
@@ -70,5 +94,18 @@ public class SkeleController : MonoBehaviour
     {
         yield return new WaitForSeconds(immunityFrameCount);
         canBeHit = true;
+    }
+
+    IEnumerable Attacking()
+    {
+        yield return new WaitForSeconds(2);
+        if(canBeHit == true)
+        {
+            canAttack = true;
+        }
+        if(canBeHit == false)
+        {
+            canAttack = false;
+        }
     }
 }

@@ -7,12 +7,23 @@ public class DetectPlayer : MonoBehaviour
     public bool isPlayerDetected = false;
     public GameObject playerObject;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if(other.CompareTag("Player"))
         {
             isPlayerDetected = true;
-            playerObject = collision.gameObject;
+            playerObject = other.gameObject;
+            Debug.Log("PlayerDetectect");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerDetected = false;
+            playerObject = null;
+            Debug.Log("PlayerLost");
         }
     }
 }
