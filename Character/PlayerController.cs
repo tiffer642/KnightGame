@@ -34,11 +34,13 @@ public class PlayerController : MonoBehaviour
     [Header("Componants")]
     public Rigidbody rb;
     public Animator animator;
+    public GameManager gm;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -99,7 +101,7 @@ public class PlayerController : MonoBehaviour
             
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.I))
         {
             if(isInvOpen == false)
             {
@@ -203,5 +205,13 @@ public class PlayerController : MonoBehaviour
     public void DisableCollider()
     {
         swordObject.GetComponent<BoxCollider>().enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Room1"))
+        {
+            gm.roomNum = 1;
+        }
     }
 }

@@ -14,6 +14,7 @@ public class SkeleController : MonoBehaviour
     public GameObject detector;
     public GameObject distanceChecker;
     public bool canAttack = true;
+    public GameObject self;
 
     [Header("NavMesh")]
     public NavMeshAgent agent;
@@ -64,7 +65,7 @@ public class SkeleController : MonoBehaviour
 
     public void DespawnSkele()
     {
-        Destroy(gameObject);
+        Destroy(self);
         Destroy(detector);
         Destroy(distanceChecker);
     }
