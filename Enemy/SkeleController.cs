@@ -15,6 +15,7 @@ public class SkeleController : MonoBehaviour
     public GameObject distanceChecker;
     public bool canAttack = true;
     public GameObject self;
+    public GameObject hitCollition;
 
     [Header("NavMesh")]
     public NavMeshAgent agent;
@@ -99,7 +100,7 @@ public class SkeleController : MonoBehaviour
 
     IEnumerable Attacking()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         if(canBeHit == true)
         {
             canAttack = true;
@@ -108,5 +109,15 @@ public class SkeleController : MonoBehaviour
         {
             canAttack = false;
         }
+    }
+
+    public void EnableHitCollitions()
+    {
+        hitCollition.SetActive(true);
+    }
+
+    public void DisableHitCollitions()
+    {
+        hitCollition.SetActive(false);
     }
 }
