@@ -32,6 +32,7 @@ public class SlotBehavior : MonoBehaviour
                 }
                 else if(swordDetectedSlotOne == true && enableSwordSpawning == true)
                 {
+                    GetComponent<AudioSource>().Play();
                     swordDetectedSlotTwo = false;
                     enableSwordSpawning = false;
                     GameObject.Find("Player").GetComponentInChildren<EquipSword>().EquipInSlotOne(knightSword);
@@ -45,6 +46,7 @@ public class SlotBehavior : MonoBehaviour
                 }
                 else if(swordDetectedSlotTwo == true && enableSwordSpawning == true)
                 {
+                    GetComponent<AudioSource>().Play();
                     swordDetectedSlotOne = false;
                     enableSwordSpawning = false;
                     GameObject.Find("Player").GetComponentInChildren<EquipSword>().EquipInSlotTwo(knightSword);

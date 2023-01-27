@@ -31,15 +31,18 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        if(isPlayerDead == true)
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Tutorial"))
         {
-            retry.SetActive(true);
-            giveUp.SetActive(true);
-        }
-        else if(isPlayerDead == false)
-        {
-            retry.SetActive(false);
-            giveUp.SetActive(false);
+            if (isPlayerDead == true)
+            {
+                retry.SetActive(true);
+                giveUp.SetActive(true);
+            }
+            else if (isPlayerDead == false)
+            {
+                retry.SetActive(false);
+                giveUp.SetActive(false);
+            }
         }
     }
 

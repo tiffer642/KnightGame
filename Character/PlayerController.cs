@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public Animator animator;
     public GameManager gm;
+    public AudioClip drawSword;
+    public AudioClip sheathSword;
+    public AudioClip footStep;
+    public AudioClip swordSwing;
 
     void Start()
     {
@@ -84,6 +88,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1 && animator.GetBool("isSheathed") == true && animator.GetFloat("MovementSpeed") == 0)
                 {
+                    GetComponent<AudioSource>().PlayOneShot(drawSword);
                     Debug.Log("Unsheathed");
                     //if items are sheathed, unsheath them
                     sheathing = false;
@@ -111,6 +116,7 @@ public class PlayerController : MonoBehaviour
                 {
                     isInvOpen = true;
                     inventory.SetActive(true);
+                    inventory.GetComponent<AudioSource>().Play();
                     mainMenuButton.SetActive(true);
                     if (GameObject.Find("SwordSlot").GetComponent<SlotBehavior>().itemInSlot != null)
                     {
@@ -143,7 +149,6 @@ public class PlayerController : MonoBehaviour
                     {
                         GameObject.Find("SwordSlot (1)").GetComponent<SlotBehavior>().itemInSlot.SetActive(false);
                     }
-
                     inventory.SetActive(false);
                     mainMenuButton.SetActive(false);
                 }
@@ -189,8 +194,8 @@ public class PlayerController : MonoBehaviour
 
     public void SheathingIn()
     {
-        Debug.Log("SheathedAnimation");
-        if(sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1)
+        GetComponent<AudioSource>().PlayOneShot(sheathSword);
+        if (sheathing == true && inventory.GetComponentInChildren<SlotBehavior>().slotted == true && inventory.GetComponentInChildren<SlotBehavior>().slotNumber == 1)
         {
             GetComponentInChildren<EquipSword>().EquipInSlotOne(swordObject);
         }
@@ -211,12 +216,18 @@ public class PlayerController : MonoBehaviour
 
     public void EnableCollider()
     {
+        GetComponent<AudioSource>().PlayOneShot(swordSwing);
         swordObject.GetComponent<BoxCollider>().enabled = true;
     }
 
     public void DisableCollider()
     {
         swordObject.GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void PlayFootstep()
+    {
+        GetComponent<AudioSource>().PlayOneShot(footStep);
     }
 
     private void OnTriggerEnter(Collider other)

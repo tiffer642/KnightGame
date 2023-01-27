@@ -16,6 +16,8 @@ public class SkeleController : MonoBehaviour
     public bool canAttack = true;
     public GameObject self;
     public GameObject hitCollition;
+    public AudioClip hitSound;
+    public AudioClip attackSound;
 
     [Header("NavMesh")]
     public NavMeshAgent agent;
@@ -38,7 +40,7 @@ public class SkeleController : MonoBehaviour
         {
             agent.destination = detector.GetComponent<DetectPlayer>().playerObject.transform.position;
 
-            if (distanceChecker.GetComponent<KeepDistance>().keepDistance == true)
+            if (distanceChecker.GetComponent<KeepDistance>().keepDistance == true && canAttack == true)
             {
                 agent.speed = 0;
                 transform.LookAt(detector.GetComponent<DetectPlayer>().playerObject.transform.position);
@@ -86,6 +88,7 @@ public class SkeleController : MonoBehaviour
                 animator.SetTrigger("Hit");
                 agent.speed = 0;
                 health -= 25;
+                GetComponent<AudioSource>().PlayOneShot(hitSound);
             }
             canBeHit = false;
             StartCoroutine(ImmunityFrames());
